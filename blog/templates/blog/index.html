@@ -1,0 +1,70 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+   {% for article in articles %}
+   <!-- post -->
+   <div class="post post-xl">
+      <!-- top section -->
+      <div class="post-top">
+          <ul class="meta list-inline mb-0">
+              <li class="list-inline-item"><a href="#"><img src="#" class="author" alt="author"/>{{article.profile}}</a></li>
+              <li class="list-inline-item">29 March 2021</li>
+              <li class="list-inline-item"><i class="icon-bubble"></i> (0)</li>
+          </ul>
+          <h5 class="post-title mb-0 mt-4"><a href="{% url 'show_article' article.slug %}">{{ article.title }}</a></h5>
+      </div>
+      <!-- thumbnail -->
+      <div class="thumb rounded">
+          <a href="category.html" class="category-badge lg position-absolute">{{ article.category.name }}</a>
+          <span class="post-format">
+              <i class="icon-picture"></i>
+          </span>
+          <a href="blog-single.html">
+              <div class="inner">
+                  <img src="{{ article.picture.url }}" alt="post-title" style="width: 100%; height: 100%; object-fit: contain;"/>
+              </div>
+          </a>
+      </div>
+      <!-- details -->
+      <div class="details">
+          <p class="excerpt mb-0">{{ article.description }}</p>
+      </div>
+      <div class="post-bottom clearfix d-flex align-items-center">
+          <div class="social-share me-auto">
+              <button class="toggle-button icon-share"></button>
+              <ul class="icons list-unstyled list-inline mb-0">
+                  {% for tag in article.tags.all %}
+                  <li class="list-inline-item"><a href="category.html" class="category-badge sm">{{ tag.name }}</a></li>
+                  {% endfor %}
+
+              </ul>
+          </div>
+          <div class="float-end d-none d-md-block">
+              <a href="{% url 'show_article' article.slug %}" class="more-link">Read more<i class="icon-arrow-right"></i></a>
+          </div>
+          <div class="more-button d-block d-md-none float-end">
+              <a href="blog-single.html"><span class="icon-options"></span></a>
+          </div>
+      </div>
+  </div>
+  {% endfor %}
+  <nav>
+    <ul class="pagination justify-content-center">
+
+        {% if articles.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ articles.previous_page_number }}">&laquo; prev</a></li>
+        {% endif %}
+
+       {% for page in articles.paginator.page_range %}
+        <li class="page-item {% if articles.number == page %}active{% endif%}"><a class="page-link"  href="?page={{page}}">{{ page }}</a></li>
+       {% endfor %}
+
+       {% if articles.has_next %}
+       <li class="page-item">
+           <a class="page-link" href="?page={{ articles.next_page_number }}">Next &raquo;</a></li>
+       {% endif %}
+    </ul>
+</nav>
+
+{% endblock %}

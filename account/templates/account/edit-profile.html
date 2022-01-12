@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="text-center">
+        <h1>Update profile</h1>
+    </div>
+   
+    <form action="{% url 'update-profile' profile.id %}" method="POST">
+        {% csrf_token %}
+        
+       {% for field in form %}
+        <div class="form-group">
+            <label class="form-label" for="">{{field.label}}</label>
+            {{field}}
+            {% if field.errors %}
+            <div class="alert alert-danger">
+                {% for error in field.errors %}
+                    {{error}}
+                {% endfor %}
+            </div>
+                
+            {% endif %}
+        </div>
+            
+        {% endfor %}
+        <div class="d-grid">
+            <button class="btn btn-danger">Update</button>
+        </div>
+    </form>
+    
+
+{% endblock %}
